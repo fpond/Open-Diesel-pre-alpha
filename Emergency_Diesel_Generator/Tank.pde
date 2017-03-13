@@ -40,11 +40,16 @@ class Tank {
       }
     }
 
-    if (Level > 80.0 && Level < 90.0) {
+    if (Level > 80.0 && Level < 90.0 || Level < 40.0) {
       //println("High Level Alarm");
+      fill(244, 98, 66);
     }
     
-    if (Level > 100.0) {
+    if (Level > 90.0 || Level < 10.0) {
+      fill(255, 0, 0);
+    }
+    
+    if (Level >= 100.0) {
       Level = 100.0;
     }
 
