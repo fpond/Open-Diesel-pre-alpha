@@ -1,9 +1,7 @@
 Clock Clock;
 Valve LO_Make_up;
 Valve EDG_DO_Make_up;
-
-float Lube_Oil = 97.00;
-int Lube_Oil_Color = 0;
+Tank LO_SUMP;
 
 PImage Valve_Open_img;
 PImage Valve_Closed_img;
@@ -19,38 +17,41 @@ void setup() {
   Clock = new Clock();
   LO_Make_up = new Valve(45, 400, 5);
   EDG_DO_Make_up = new Valve(45, 50, 7);
+  LO_SUMP = new Tank(150, 375, LO_Make_up.statex(), false, 50.0, "LO SUMP"); //position x, postion y, fill, drain, level %
 }
 
 void draw() {
   background(150);
 
+  fill(255);
   text(nf(Clock.minute(), 2, 0) + ":" + nf(Clock.second(), 2, 0), 20, 20);
 
-  if (Clock.minute() == 1) {
-    println("BING BING BING");
+  if (Clock.minute() == 25) {
+    //println("YOU HAVE FIVE MINUTES REMAINING");
   }
-
-
-  textSize(20);
-  text("Lube Oil (gallons): " + nf(Lube_Oil, 2, 2), 20, 450);
-  fill(0);
 
   LO_Make_up.display();
   EDG_DO_Make_up.display();
+  LO_SUMP.display();
 }
 
-void mousePressed() {
+void mouseReleased() {
   LO_Make_up.click();
   EDG_DO_Make_up.click();
 }
 
-void keyPressed() {
+void keyReleased() {
+  println(keyCode);
   if (key == CODED) {
-    if (keyCode == UP) {
+    if (keyCode == 112) {
       Clock.start();
     }
-    if (keyCode == DOWN) {
+    if (keyCode == 113) {
+      Clock.pause();
+    }
+    if (keyCode == 114) {
       Clock.stop();
+      println("Stop Time is: " + nf(Clock.minute(), 2, 0) + ":" + nf(Clock.second(), 2, 0));
     }
   }
 }
