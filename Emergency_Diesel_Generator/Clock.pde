@@ -1,40 +1,51 @@
 class Clock {
-  int time;
-  int second;
-  int minute;
-  int x;
-  int y;
-  Boolean clock = false;
+  int startTime = 0;
+  int stopTime = 0;
+  int pauseTime = 0;
+  int originalstartTime = 0;
+  int running = 0;
 
-  Clock(int tempX, int tempY) {
-    x = tempX;
-    y = tempY;
-
-    time = 0;
+  void start() {
+    startTime = millis();
+    originalstartTime = millis();
+    running = 1;
   }
 
-  void display() {
-    if (clock) {
-      //second = (millis() - time) / 1000;
-      //minute = (millis()/ 1000 / 60);
-      second = time;
-      minute = time/60;
-      if (second == 60) {
-        time = millis();
-      }
-    }
-    text(nf(minute, 2, 0) + ":" + nf(second, 2, 0), x, y);
+  void pause() {
+    pauseTime = millis();
+    running = 2;
   }
 
-  void state() {
-    if (key == CODED) {
-      if (keyCode == UP) {
-        println(millis());
-        clock = true;
-      }
-      if (keyCode == DOWN) {
-        clock = false;
-      }
+  void stop() {
+    stopTime = millis();
+    running = 0;
+  }
+
+  int getElapsedTime() {
+    int elapsed = 0;
+    if (running  == 1) {
+      elapsed = millis() - startTime;
     }
+    if (running == 2) {
+      elapsed = pauseTime - startTime;
+      originalstartTime = startTime;
+      
+    }
+    if (running == 0) {
+      elapsed = stopTime - startTime;
+    }
+    return elapsed;
+  }
+
+  int second() {
+    return (getElapsedTime()/1000) % 60;
+  }
+
+  int minute() {
+    return (getElapsedTime()/(1000*60)) % 60;
+  }
+
+  int hour() {
+    return (getElapsedTime()/(1000*60*60)) % 24;
   }
 }

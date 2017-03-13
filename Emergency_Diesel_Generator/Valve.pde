@@ -31,4 +31,7 @@ class Valve {
       }
     }
   }
+  boolean statex() {
+    return !state;
+  }
 }
